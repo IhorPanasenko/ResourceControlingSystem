@@ -19,6 +19,5 @@ namespace ResourceControlingAPI.Models
         [Required]
         public int FlatNumber { get; set; }
 
-
     }
 }

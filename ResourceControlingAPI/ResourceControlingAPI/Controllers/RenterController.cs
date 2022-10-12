@@ -27,5 +27,14 @@ namespace ResourceControlingAPI.Controllers
             var renterDto = _mapper.Map<RenterDto>(renters[0]);
             return Ok(renterDto);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(RenterDto renterDto)
+        {
+            var renter = _mapper.Map<Renter>(renterDto);
+            await _dbContext.AddAsync(renter);
+            await _dbContext.SaveChangesAsync();
+            return Ok(renter);
+        }
     }
 }

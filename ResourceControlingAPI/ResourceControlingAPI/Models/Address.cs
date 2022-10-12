@@ -8,10 +8,10 @@ namespace ResourceControlingAPI.Models
         public int AddressId { get; set; }
 
         [Required]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Required]
-        public string StreetName { get; set; }
+        public string? StreetName { get; set; }
 
         [Required]
         public int HouseNumber { get; set; }

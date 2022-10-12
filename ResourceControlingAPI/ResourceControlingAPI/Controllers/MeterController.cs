@@ -31,10 +31,19 @@ namespace ResourceControlingAPI.Controllers
         }
 
         // GET api/<MeterController>/5
-        [HttpGet("{id}")]
-        public string Get([FromRoute] int id)
+        [HttpGet]
+        [Route("{id=int}")]
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
-            return "value";
+            var meter = await _dbContext.Meters.FindAsync(id);
+
+            if(meter == null)
+            {
+                return BadRequest($"Can't find Meter with id {id}");
+            }
+
+            var meterDto = _mapperService.AsDto(meter);
+            return Ok(meterDto);
         }
 
         // POST api/<MeterController>

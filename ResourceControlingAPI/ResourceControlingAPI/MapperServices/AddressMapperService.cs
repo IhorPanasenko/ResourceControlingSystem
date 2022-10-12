@@ -19,7 +19,12 @@ namespace ResourceControlingAPI.MapperServices
 
         public List<AddressDto> AsDtoList(List<Address> modelsList)
         {
-            throw new NotImplementedException();
+            List<AddressDto> addressDtos = new List<AddressDto>();
+            foreach (Address model in modelsList)
+            {
+                addressDtos.Add(AsDto(model));
+            }
+            return addressDtos;
         }
 
         public Address AsModel(AddressDto dto)

@@ -14,5 +14,7 @@ namespace ResourceControlingAPI.Data
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Meter> Meters { get; set; }
+
+        public DbSet<MeterReading> meterReadings { get; set; }
     }
 }

@@ -22,9 +22,10 @@ namespace ResourceControlingAPI.Dtos
         [Phone]
         public string? PhoneNumber { get; set; }
 
+        [Required]
         [EmailAddress]
         public string? EmailAddress { get; set; }
 
-        public bool IsSubscribed { get; set; }
+        public bool IsSubscribed { get; set; } = false;
     }
 }

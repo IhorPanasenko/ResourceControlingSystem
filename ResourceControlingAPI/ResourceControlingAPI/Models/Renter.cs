@@ -19,10 +19,13 @@ namespace ResourceControlingAPI.Models
         public string? SecondName { get; set; }
 
         [Required]
+        [Phone]
         public string? PhoneNumber { get; set; }
 
+        [Required]
+        [EmailAddress]
         public string? EmailAddress { get; set; }
 
-        public bool IsSubscribed { get; set; }
+        public bool IsSubscribed { get; set; } = false;
     }
 }

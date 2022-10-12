@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ResourceControlingAPI.Data;
 using ResourceControlingAPI.Dtos;
+using ResourceControlingAPI.MapperServices;
 using ResourceControlingAPI.Models;
 
 namespace ResourceControlingAPI.Controllers
@@ -14,7 +15,7 @@ namespace ResourceControlingAPI.Controllers
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _dbContext;
 
-        public RenterController(IMapper mapper,ApplicationDbContext dbContext) 
+        public RenterController(IMapper mapper, ApplicationDbContext dbContext)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -23,9 +24,10 @@ namespace ResourceControlingAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            RenterMapperService mapService = new RenterMapperService(_mapper);
             List<Renter> renters = await _dbContext.Renters.ToListAsync();
-            var renterDto = _mapper.Map<RenterDto>(renters[0]);
-            return Ok(renterDto);
+            List<RenterDto> renterDtos = mapService.AsDtoList(renters);
+            return Ok(renterDtos);
         }
 
         [HttpPost]

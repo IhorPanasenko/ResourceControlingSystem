@@ -30,7 +30,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id=int}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var renter = await _dbContext.Renters.FindAsync(id);
@@ -57,5 +57,22 @@ namespace ResourceControlingAPI.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok(renter);
         }
+
+        [HttpDelete]
+        [Route("{id=int}")]
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+            var renter = await _dbContext.Renters.FindAsync(id);
+
+            if (renter == null)
+            {
+                return NotFound("Invalid Renter Id");
+            }
+
+            _dbContext.Renters.Remove(renter);
+            await _dbContext.SaveChangesAsync();
+            return Ok(renter);
+        }
+
     }
 }

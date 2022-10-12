@@ -13,8 +13,10 @@ namespace ResourceControlingAPI.Models
         [Required]
         public string? Purpose { get; set; }
 
-        [Range(0,double.PositiveInfinity)]
+        [Range(1,double.PositiveInfinity)]
         public double MaximumAvailableValue { get; set; }
+
+        public List<MeterReading> meterReadings { get; set; }
 
     }
 }

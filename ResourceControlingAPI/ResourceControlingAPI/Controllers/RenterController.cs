@@ -2,9 +2,12 @@
 
 namespace ResourceControlingAPI.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class RenterController : Controller
     {
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult GetAll()
         {
             return View();
         }

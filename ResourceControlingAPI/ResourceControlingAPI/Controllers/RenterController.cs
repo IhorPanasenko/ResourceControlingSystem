@@ -47,6 +47,11 @@ namespace ResourceControlingAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RenterDto renterDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid parameters");
+            }
+
             Renter renter = _mapperService.AsModel(renterDto);
             await _dbContext.AddAsync(renter);
             await _dbContext.SaveChangesAsync();

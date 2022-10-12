@@ -29,6 +29,21 @@ namespace ResourceControlingAPI.Controllers
             return Ok(renterDtos);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get([FromRoute] int id)
+        {
+            var renter = await _dbContext.Renters.FindAsync(id);
+
+            if(renter== null)
+            {
+                return NotFound();
+            }
+                
+            var renterDto = _mapperService.AsDto(renter);
+            return Ok(renterDto);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(RenterDto renterDto)
         {

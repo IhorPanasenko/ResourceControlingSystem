@@ -2,7 +2,7 @@
 
 namespace ResourceControlingAPI.Models
 {
-    public class Renters
+    public class Renter
     {
         [Key]
         [Required]

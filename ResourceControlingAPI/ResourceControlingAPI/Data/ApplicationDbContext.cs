@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ResourceControlingAPI.Models;
 
 namespace ResourceControlingAPI.Data
 {
@@ -7,5 +8,7 @@ namespace ResourceControlingAPI.Data
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Renter> Renters { get; set; }
     }
 }

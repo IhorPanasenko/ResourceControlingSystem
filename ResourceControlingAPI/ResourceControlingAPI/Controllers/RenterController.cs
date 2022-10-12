@@ -65,9 +65,10 @@ namespace ResourceControlingAPI.Controllers
                 return NotFound("Invalid Renter Id");
             }
 
+            var renterDto = _mapperService.AsDto(renter);
             _dbContext.Renters.Remove(renter);
             await _dbContext.SaveChangesAsync();
-            return Ok(renter);
+            return Ok(renterDto);
         }
 
         [HttpPut]

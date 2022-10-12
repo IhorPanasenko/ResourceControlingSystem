@@ -39,7 +39,7 @@ namespace ResourceControlingAPI.Controllers
 
             if(meter == null)
             {
-                return BadRequest($"Can't find Meter with id {id}");
+                return NotFound($"Can't find Meter with id {id}");
             }
 
             var meterDto = _mapperService.AsDto(meter);
@@ -65,7 +65,7 @@ namespace ResourceControlingAPI.Controllers
             _dbContext.Meters.Add(meter);
             await _dbContext.SaveChangesAsync();
 
-            return Ok(meter);
+            return Ok(meterDto);
 
         }
 
@@ -76,9 +76,21 @@ namespace ResourceControlingAPI.Controllers
         }
 
         // DELETE api/<MeterController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute]int id)
         {
+            var meter = await _dbContext.Meters.FindAsync(id);
+
+            if(meter == null)
+            {
+                return NotFound($"Can't find Meter with id {id}");
+            }
+
+            var meterDto = _mapperService.AsDto(meter);
+            _dbContext.Meters.Remove(meter);
+            await _dbContext.SaveChangesAsync();
+            return Ok(meterDto);
         }
     }
 }

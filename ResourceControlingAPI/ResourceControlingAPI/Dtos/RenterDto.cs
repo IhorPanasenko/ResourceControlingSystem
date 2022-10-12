@@ -7,6 +7,7 @@ namespace ResourceControlingAPI.Dtos
         [Key]
         public int RenterID { get; set; }
 
+        [Required]
         public string? Login { get; set; }
 
         [Required]

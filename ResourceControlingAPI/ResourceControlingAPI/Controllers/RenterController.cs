@@ -5,6 +5,7 @@ using ResourceControlingAPI.Data;
 using ResourceControlingAPI.Dtos;
 using ResourceControlingAPI.MapperServices;
 using ResourceControlingAPI.Models;
+using ResourceControlingAPI.Services;
 
 namespace ResourceControlingAPI.Controllers
 {
@@ -47,11 +48,6 @@ namespace ResourceControlingAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RenterDto renterDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Invalid parameters");
-            }
-
             Renter renter = _mapperService.AsModel(renterDto);
             await _dbContext.AddAsync(renter);
             await _dbContext.SaveChangesAsync();
@@ -70,6 +66,24 @@ namespace ResourceControlingAPI.Controllers
             }
 
             _dbContext.Renters.Remove(renter);
+            await _dbContext.SaveChangesAsync();
+            return Ok(renter);
+        }
+
+        [HttpPut]
+        [Route("{id=int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, RenterDtoUpdate renterDto)
+        {
+            var renter = await _dbContext.Renters.FindAsync(id);
+
+            if(renter == null)
+            {
+                return NotFound("Invalid Renter Id");
+            }
+            
+            RenterUpdateService renterUpdateService = new RenterUpdateService();
+            renterUpdateService.Update(renter, renterDto);
+            _dbContext.Renters.Update(renter);
             await _dbContext.SaveChangesAsync();
             return Ok(renter);
         }

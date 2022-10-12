@@ -12,5 +12,7 @@ namespace ResourceControlingAPI.Data
         public DbSet<Renter> Renters { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Meter> Meters { get; set; }
     }
 }

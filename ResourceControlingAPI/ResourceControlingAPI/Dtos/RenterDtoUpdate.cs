@@ -1,4 +1,6 @@
-﻿namespace ResourceControlingAPI.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ResourceControlingAPI.Dtos
 {
     public class RenterDtoUpdate
     {
@@ -10,8 +12,10 @@
 
         public string? SecondName { get; set; }
 
+        [Phone]
         public string? PhoneNumber { get; set; }
 
+        [EmailAddress]
         public string? EmailAddress { get; set; }
 
         public bool IsSubscribed { get; set; }

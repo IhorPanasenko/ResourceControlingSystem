@@ -56,6 +56,7 @@ namespace ResourceControlingAPI.Controllers
             var address = _mapperService.AsModel(addressDto);
             await _dbContext.AddAsync(address);
             await _dbContext.SaveChangesAsync();
+            addressDto = _mapperService.AsDto(address);
 
             return Ok(addressDto);
         }

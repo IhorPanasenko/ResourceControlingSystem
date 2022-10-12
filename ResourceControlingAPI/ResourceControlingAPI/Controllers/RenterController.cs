@@ -51,7 +51,8 @@ namespace ResourceControlingAPI.Controllers
             Renter renter = _mapperService.AsModel(renterDto);
             await _dbContext.AddAsync(renter);
             await _dbContext.SaveChangesAsync();
-            return Ok(renter);
+            renterDto = _mapperService.AsDto(renter);
+            return Ok(renterDto);
         }
 
         [HttpDelete]

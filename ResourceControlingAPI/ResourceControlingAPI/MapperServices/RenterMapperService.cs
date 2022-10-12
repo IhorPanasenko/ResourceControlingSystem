@@ -30,7 +30,7 @@ namespace ResourceControlingAPI.MapperServices
 
         public Renter AsModel(RenterDto dto)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<Renter>(dto);
         }
 
         public List<Renter> AsModelList(List<RenterDto> dtosList)

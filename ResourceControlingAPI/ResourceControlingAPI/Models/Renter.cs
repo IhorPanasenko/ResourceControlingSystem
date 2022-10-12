@@ -5,7 +5,6 @@ namespace ResourceControlingAPI.Models
     public class Renter
     {
         [Key]
-        [Required]
         public int RenterID { get; set; }
 
         [Required]

@@ -64,7 +64,7 @@ namespace ResourceControlingAPI.Controllers
 
             _dbContext.Meters.Add(meter);
             await _dbContext.SaveChangesAsync();
-
+            meterDto = _mapperService.AsDto(meter);
             return Ok(meterDto);
 
         }

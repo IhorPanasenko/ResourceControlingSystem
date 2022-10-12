@@ -70,9 +70,12 @@ namespace ResourceControlingAPI.Controllers
         }
 
         // PUT api/<MeterController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("{id=int}")]
+        public async Task<IActionResult> Update([FromRoute]int id, MeterDtoUpdate meterDtoUpdate)
         {
+
+            return Ok();
         }
 
         // DELETE api/<MeterController>/5

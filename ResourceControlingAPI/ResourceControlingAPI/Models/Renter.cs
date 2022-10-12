@@ -8,20 +8,20 @@ namespace ResourceControlingAPI.Models
         public int RenterID { get; set; }
 
         [Required]
-        public string Login { get; set; }
+        public string? Login { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Required]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
-        public string SecondName { get; set; }
+        public string? SecondName { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         public bool IsSubscribed { get; set; }
     }

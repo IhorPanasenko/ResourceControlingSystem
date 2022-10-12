@@ -12,7 +12,7 @@ namespace ResourceControlingAPI
             CreateMap<RenterDto, Renter>().ReverseMap();
 
             CreateMap<Address, AddressDto>();
-            CreateMap<AddressDto, AddressDto>().ReverseMap();   
+            CreateMap<AddressDto, Address>().ReverseMap();   
             
         }
     }

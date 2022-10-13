@@ -17,7 +17,7 @@ namespace ResourceControlingAPI.Services
             }
             if(dtoUpdate.POstalOficeName!= null)
             {
-                model.PostalOficeNumber = dtoUpdate.PostalOficeNumber;
+                model.POstalOficeName = dtoUpdate.POstalOficeName;
             }
             if(dtoUpdate.PostalOficeNumber > 0)
             {

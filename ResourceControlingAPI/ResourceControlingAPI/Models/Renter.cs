@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResourceControlingAPI.Models
 {
@@ -30,6 +31,8 @@ namespace ResourceControlingAPI.Models
 
         public List<Order> Orders { get; set; }
 
-        public List<Address> Addresses { get; set; }
+        [ForeignKey("AddressId")]
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
     }
 }

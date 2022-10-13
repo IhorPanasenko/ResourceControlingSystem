@@ -21,7 +21,7 @@ namespace ResourceControlingAPI.Models
         public int PostalOficeNumber { get; set; }
 
         [Required]
-        public DateTime DateOfOrder { get; set; }
+        public DateTime? DateOfOrder { get; set; }
 
         [ForeignKey("RenterId")]
         public int RenterId { get; set; }

@@ -12,7 +12,7 @@
 
         public int PostalOficeNumber { get; set; }
 
-        public DateTime DateOfOrder { get; set; }
+        public DateTime? DateOfOrder { get; set; }
 
         public int RenterId { get; set; }
 

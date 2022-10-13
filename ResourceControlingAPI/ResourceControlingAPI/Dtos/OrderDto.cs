@@ -22,7 +22,7 @@ namespace ResourceControlingAPI.Dtos
         public int PostalOficeNumber { get; set; }
 
         [Required]
-        public DateTime DateOfOrder { get; set; }
+        public DateTime? DateOfOrder { get; set; }
 
         public int RenterId { get; set; }
 

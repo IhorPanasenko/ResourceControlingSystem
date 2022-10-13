@@ -25,6 +25,9 @@ namespace ResourceControlingAPI
 
             CreateMap<Order, OrderDto>();
             CreateMap<OrderDto, Order>().ReverseMap();
+
+            CreateMap<Device, DeviceDto>();
+            CreateMap<DeviceDto, Device>().ReverseMap();
         }
     }
 }

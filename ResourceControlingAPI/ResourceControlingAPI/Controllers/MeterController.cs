@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ResourceControlingAPI.Data;
 using ResourceControlingAPI.Dtos;
 using ResourceControlingAPI.MapperServices;
+using ResourceControlingAPI.Models;
 using ResourceControlingAPI.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

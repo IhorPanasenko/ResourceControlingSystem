@@ -9,5 +9,7 @@ namespace ResourceControlingAPI.Dtos
 
         [Range(0, double.PositiveInfinity)]
         public double MaximumAvailableValue { get; set; }
+
+        public double ResourcePrice { get; set; }
     }
 }

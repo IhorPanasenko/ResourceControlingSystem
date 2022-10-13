@@ -19,6 +19,10 @@ namespace ResourceControlingAPI.Services
             {
                 model.MaximumAvailableValue = dtoUpdate.MaximumAvailableValue;
             }
+            if (dtoUpdate.ResourcePrice > 0)
+            {
+                model.ResourcePrice = dtoUpdate.ResourcePrice;
+            }
         }
     }
 }

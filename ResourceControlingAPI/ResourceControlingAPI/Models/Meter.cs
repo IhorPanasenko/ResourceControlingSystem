@@ -18,6 +18,9 @@ namespace ResourceControlingAPI.Models
         [Range(1,double.PositiveInfinity)]
         public double MaximumAvailableValue { get; set; }
 
+        [Required]
+        public double ResourcePrice { get; set; }
+
         public List<MeterReading> meterReadings { get; set; }
 
         public Device Device { get; set; }

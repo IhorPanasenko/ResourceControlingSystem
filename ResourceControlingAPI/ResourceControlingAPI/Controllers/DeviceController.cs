@@ -32,7 +32,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public IActionResult Get([FromRoute] int id)
         {
             var device = _dbContext.Devices.Where(d => d.DeviceId == id).Include(d => d.Address).Include(d => d.Meter).ToList().FirstOrDefault();
 

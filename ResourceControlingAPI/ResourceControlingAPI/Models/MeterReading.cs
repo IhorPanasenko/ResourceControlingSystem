@@ -11,7 +11,7 @@ namespace ResourceControlingAPI.Models
         [Required]
         public int ReadingNumbers { get; set; }
         [Required]
-        public DateTime DateTimeReading { get; set; }
+        public DateTime? DateTimeReading { get; set; }
 
         [ForeignKey("MeterId")]
         public int MeterId { get; set; }

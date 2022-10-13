@@ -12,7 +12,7 @@ namespace ResourceControlingAPI.Dtos
         public int ReadingNumbers { get; set; }
 
         [Required]
-        public DateTime DateTimeReading { get; set; }
+        public DateTime? DateTimeReading { get; set; }
 
         public int MeterId { get; set; }
 

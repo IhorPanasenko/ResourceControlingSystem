@@ -30,13 +30,22 @@ namespace ResourceControlingAPI.Controllers
         {
             var meterReadings = await _dbContext.MeterReadings.Include(mR => mR.Meter).ToListAsync();
             var dtos = _meterReadingmapperService.AsDtoList(meterReadings);
-
-            //foreach (MeterReadingDto meterReading in dtos)
-            //{
-            //    var meter await _dbContext.Meters.FindAsync(meterReading.MeterId)
-            //}
-
             return Ok(dtos);
+        }
+
+        [HttpGet]
+        [Route("{id=int}")]
+        public async Task<IActionResult> Get([FromRoute] int id)
+        {
+            var meterReading = _dbContext.MeterReadings.Where(m => m.MeterReadingId == id).Include(m => m.Meter).ToList().FirstOrDefault();
+
+            if(meterReading == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _meterReadingmapperService.AsDto(meterReading);
+            return Ok(dto);
         }
     }
 }

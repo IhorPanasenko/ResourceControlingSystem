@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ResourceControlingAPI.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResourceControlingAPI.Dtos
 {
@@ -15,6 +17,8 @@ namespace ResourceControlingAPI.Dtos
         public DateTime? DateTimeReading { get; set; }
 
         public int MeterId { get; set; }
+
+        public MeterDto? Meter { get; set; }
 
     }
 }

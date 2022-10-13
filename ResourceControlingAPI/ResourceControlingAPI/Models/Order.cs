@@ -12,10 +12,10 @@ namespace ResourceControlingAPI.Models
         public int NumberOfDevices { get; set; }
 
         [Required]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Required]
-        public string POstalOficeName { get; set; }
+        public string? POstalOficeName { get; set; }
 
         [Required]
         public int PostalOficeNumber { get; set; }
@@ -25,10 +25,10 @@ namespace ResourceControlingAPI.Models
 
         [ForeignKey("RenterId")]
         public int RenterId { get; set; }
-        public Renter Renter { get; set; }
+        public Renter? Renter { get; set; }
 
         [ForeignKey("WarehouseId")]
         public int WarehouseId { get; set; }    
-        public Warehouse Warehouse { get; set; }
+        public Warehouse? Warehouse { get; set; }
     }
 }

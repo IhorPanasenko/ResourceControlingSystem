@@ -18,5 +18,7 @@ namespace ResourceControlingAPI.Models
 
         public List<MeterReading> meterReadings { get; set; }
 
+        public Device Device { get; set; }
+
     }
 }

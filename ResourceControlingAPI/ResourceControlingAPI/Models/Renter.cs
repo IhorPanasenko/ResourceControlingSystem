@@ -27,5 +27,7 @@ namespace ResourceControlingAPI.Models
         public string? EmailAddress { get; set; }
 
         public bool IsSubscribed { get; set; } = false;
+
+        public List<Order> Orders { get; set; }
     }
 }

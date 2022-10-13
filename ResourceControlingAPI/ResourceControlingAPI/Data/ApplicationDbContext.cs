@@ -20,5 +20,7 @@ namespace ResourceControlingAPI.Data
         public DbSet<Device> Devices { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Warehouse> Warehouses { get; set; }
     }
 }

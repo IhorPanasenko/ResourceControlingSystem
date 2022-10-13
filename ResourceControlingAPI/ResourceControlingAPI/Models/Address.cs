@@ -21,5 +21,7 @@ namespace ResourceControlingAPI.Models
 
         public List<Device> Devices { get; set; }
 
+        public List<Renter> Renters { get; set; }
+
     }
 }

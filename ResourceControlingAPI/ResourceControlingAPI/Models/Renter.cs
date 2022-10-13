@@ -29,5 +29,7 @@ namespace ResourceControlingAPI.Models
         public bool IsSubscribed { get; set; } = false;
 
         public List<Order> Orders { get; set; }
+
+        public List<Address> Addresses { get; set; }
     }
 }

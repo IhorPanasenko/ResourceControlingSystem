@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ResourceControlingAPI.Data;
 using ResourceControlingAPI.Dtos;
 using ResourceControlingAPI.MapperServices;
+using ResourceControlingAPI.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -74,8 +75,19 @@ namespace ResourceControlingAPI.Controllers
         [Route("{id=int}")]
         public async Task<IActionResult> Update([FromRoute]int id, MeterDtoUpdate meterDtoUpdate)
         {
+            var meter = await _dbContext.Meters.FindAsync(id);
 
-            return Ok();
+            if(meter == null)
+            {
+                return NotFound();
+            }
+
+            MeterUpdateService updateService = new MeterUpdateService();
+            updateService.Update(meter, meterDtoUpdate);
+            var meterDto = _mapperService.AsDto(meter);
+            _dbContext.Meters.Update(meter);
+            await _dbContext.SaveChangesAsync();
+            return Ok(meterDto);
         }
 
         // DELETE api/<MeterController>/5

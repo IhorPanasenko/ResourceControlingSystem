@@ -6,6 +6,7 @@ namespace ResourceControlingAPI.Dtos
     {
         [Key]
         public int MeterId { get; set; }
+
         [Required]
         public int Number { get; set; }
 

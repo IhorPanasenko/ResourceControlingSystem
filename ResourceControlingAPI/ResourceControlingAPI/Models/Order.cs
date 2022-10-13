@@ -26,5 +26,9 @@ namespace ResourceControlingAPI.Models
         [ForeignKey("RenterId")]
         public int RenterId { get; set; }
         public Renter Renter { get; set; }
+
+        [ForeignKey("WarehouseId")]
+        public int WarehouseId { get; set; }    
+        public Warehouse Warehouse { get; set; }
     }
 }

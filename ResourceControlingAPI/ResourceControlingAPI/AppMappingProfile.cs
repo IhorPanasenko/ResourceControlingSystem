@@ -22,6 +22,9 @@ namespace ResourceControlingAPI
 
             CreateMap<MeterReading, MeterReadingDto>();
             CreateMap<MeterReadingDto, MeterReading>().ReverseMap();
+
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>().ReverseMap();
         }
     }
 }

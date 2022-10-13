@@ -29,10 +29,10 @@ namespace ResourceControlingAPI.Models
 
         public bool IsSubscribed { get; set; } = false;
 
-        public List<Order> Orders { get; set; }
+        public List<Order>? Orders { get; set; }
 
         [ForeignKey("AddressId")]
         public int AddressId { get; set; }
-        public Address Address { get; set; }
+        public Address? Address { get; set; }
     }
 }

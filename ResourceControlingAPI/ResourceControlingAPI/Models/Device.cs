@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResourceControlingAPI.Models
@@ -8,9 +9,9 @@ namespace ResourceControlingAPI.Models
         [Key]
         public int DeviceId { get; set; }
 
-        //[ForeignKey("AddressId")]
-        //public int AddressId { get; set; }
-        //public Address Address { get; set; }
+        [ForeignKey("AddressId")]
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
 
         [ForeignKey("MeterId")]
         public int MeterId { get; set; }

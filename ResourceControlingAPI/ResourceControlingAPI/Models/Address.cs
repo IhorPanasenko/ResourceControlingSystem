@@ -19,5 +19,7 @@ namespace ResourceControlingAPI.Models
         [Required]
         public int FlatNumber { get; set; }
 
+        public List<Device> Devices { get; set; }
+
     }
 }

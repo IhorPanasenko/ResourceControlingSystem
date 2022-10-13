@@ -16,21 +16,19 @@ namespace ResourceControlingAPI.Controllers
     public class MeterReadingController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly MeterReadingMapperService _meterReadingMapperService;
-        private readonly MeterMapperService _meterMapperService;
+        private readonly MeterReadingMapperService _mapperService;
 
         public MeterReadingController(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
-            _meterReadingMapperService = new MeterReadingMapperService(mapper);
-            _meterMapperService = new MeterMapperService(mapper);
+            _mapperService = new MeterReadingMapperService(mapper);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var meterReadings = await _dbContext.MeterReadings.Include(mR => mR.Meter).ToListAsync();
-            var dtos = _meterReadingMapperService.AsDtoList(meterReadings);
+            var dtos = _mapperService.AsDtoList(meterReadings);
             return Ok(dtos);
         }
 
@@ -45,14 +43,14 @@ namespace ResourceControlingAPI.Controllers
                 return NotFound();
             }
 
-            var dto = _meterReadingMapperService.AsDto(meterReading);
+            var dto = _mapperService.AsDto(meterReading);
             return Ok(dto);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(MeterReadingDto meterReadingDto)
         {
-            var meterReading = _meterReadingMapperService.AsModel(meterReadingDto);
+            var meterReading = _mapperService.AsModel(meterReadingDto);
             var meter = await _dbContext.Meters.FindAsync(meterReadingDto.MeterId);
 
             if(meter == null)
@@ -60,9 +58,10 @@ namespace ResourceControlingAPI.Controllers
                 return NotFound($"can't find meter with such Id {meterReadingDto.MeterId}");
             }
 
+            meterReading.Meter = meter;
             await _dbContext.MeterReadings.AddAsync(meterReading);
             await _dbContext.SaveChangesAsync();
-            meterReadingDto = _meterReadingMapperService.AsDto(meterReading);
+            meterReadingDto = _mapperService.AsDto(meterReading);
             return Ok(meterReadingDto);
         }
 
@@ -76,7 +75,7 @@ namespace ResourceControlingAPI.Controllers
             {
                 return NotFound("");
             }
-            var dto = _meterReadingMapperService.AsDto(meterReading);
+            var dto = _mapperService.AsDto(meterReading);
             meterReading.Meter = null;
             _dbContext.MeterReadings.Remove(meterReading);
             await _dbContext.SaveChangesAsync();
@@ -104,7 +103,7 @@ namespace ResourceControlingAPI.Controllers
             }
 
             meterReading.Meter = meter;
-            var meterReadingDto = _meterReadingMapperService.AsDto(meterReading);
+            var meterReadingDto = _mapperService.AsDto(meterReading);
             _dbContext.MeterReadings.Update(meterReading);
             await _dbContext.SaveChangesAsync();
             return Ok(meterReadingDto);

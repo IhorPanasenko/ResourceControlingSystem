@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResourceControlingAPI.Models
 {
@@ -14,6 +15,8 @@ namespace ResourceControlingAPI.Models
 
         [ForeignKey("MeterId")]
         public int MeterId { get; set; }
+
+        [JsonIgnore]
         public Meter Meter { get; set; }
 
         

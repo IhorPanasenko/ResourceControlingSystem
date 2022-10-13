@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ResourceControlingAPI.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResourceControlingAPI.Dtos
 {
@@ -19,5 +21,7 @@ namespace ResourceControlingAPI.Dtos
         public string? EmailAddress { get; set; }
 
         public bool IsSubscribed { get; set; }
+
+        public int AddressId { get; set; }
     }
 }

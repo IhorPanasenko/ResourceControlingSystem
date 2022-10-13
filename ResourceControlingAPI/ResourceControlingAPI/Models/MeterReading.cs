@@ -17,7 +17,7 @@ namespace ResourceControlingAPI.Models
         public int MeterId { get; set; }
 
         [JsonIgnore]
-        public Meter Meter { get; set; }
+        public Meter? Meter { get; set; }
 
         
     }

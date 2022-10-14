@@ -28,6 +28,9 @@ namespace ResourceControlingAPI
 
             CreateMap<Device, DeviceDto>();
             CreateMap<DeviceDto, Device>().ReverseMap();
+
+            CreateMap<Admin, AdminDto>();
+            CreateMap<AdminDto, Admin>().ReverseMap();
         }
     }
 }

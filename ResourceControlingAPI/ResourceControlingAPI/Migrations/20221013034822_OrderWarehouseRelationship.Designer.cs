@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResourceControlingAPI.Data;
 
@@ -11,9 +12,10 @@ using ResourceControlingAPI.Data;
 namespace ResourceControlingAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221013034822_OrderWarehouseRelationship")]
+    partial class OrderWarehouseRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,43 +49,6 @@ namespace ResourceControlingAPI.Migrations
                     b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("ResourceControlingAPI.Models.Admin", b =>
-                {
-                    b.Property<int>("AdminId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"), 1L, 1);
-
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AdminId");
-
-                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("ResourceControlingAPI.Models.Device", b =>
@@ -128,9 +93,6 @@ namespace ResourceControlingAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("ResourcePrice")
-                        .HasColumnType("float");
-
                     b.HasKey("MeterId");
 
                     b.ToTable("Meters");
@@ -144,8 +106,7 @@ namespace ResourceControlingAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MeterReadingId"), 1L, 1);
 
-                    b.Property<DateTime?>("DateTimeReading")
-                        .IsRequired()
+                    b.Property<DateTime>("DateTimeReading")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("MeterId")
@@ -158,7 +119,7 @@ namespace ResourceControlingAPI.Migrations
 
                     b.HasIndex("MeterId");
 
-                    b.ToTable("MeterReadings");
+                    b.ToTable("meterReadings");
                 });
 
             modelBuilder.Entity("ResourceControlingAPI.Models.Order", b =>
@@ -173,8 +134,7 @@ namespace ResourceControlingAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateOfOrder")
-                        .IsRequired()
+                    b.Property<DateTime>("DateOfOrder")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("NumberOfDevices")
@@ -210,9 +170,6 @@ namespace ResourceControlingAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RenterID"), 1L, 1);
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<string>("EmailAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -240,8 +197,6 @@ namespace ResourceControlingAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RenterID");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Renters");
                 });
@@ -314,22 +269,9 @@ namespace ResourceControlingAPI.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("ResourceControlingAPI.Models.Renter", b =>
-                {
-                    b.HasOne("ResourceControlingAPI.Models.Address", "Address")
-                        .WithMany("Renters")
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("ResourceControlingAPI.Models.Address", b =>
                 {
                     b.Navigation("Devices");
-
-                    b.Navigation("Renters");
                 });
 
             modelBuilder.Entity("ResourceControlingAPI.Models.Meter", b =>

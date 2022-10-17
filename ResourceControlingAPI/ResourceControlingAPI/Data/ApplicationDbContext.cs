@@ -10,5 +10,19 @@ namespace ResourceControlingAPI.Data
         }
 
         public DbSet<Renter> Renters { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Meter> Meters { get; set; }
+
+        public DbSet<MeterReading> MeterReadings { get; set; }
+
+        public DbSet<Device> Devices { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Warehouse> Warehouses { get; set; }
+
+        public DbSet<Admin> Admins { get; set; }
     }
 }

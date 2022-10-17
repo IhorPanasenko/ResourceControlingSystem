@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResourceControlingAPI.Models
 {
@@ -27,5 +28,11 @@ namespace ResourceControlingAPI.Models
         public string? EmailAddress { get; set; }
 
         public bool IsSubscribed { get; set; } = false;
+
+        public List<Order>? Orders { get; set; }
+
+        [ForeignKey("AddressId")]
+        public int AddressId { get; set; }
+        public Address? Address { get; set; }
     }
 }

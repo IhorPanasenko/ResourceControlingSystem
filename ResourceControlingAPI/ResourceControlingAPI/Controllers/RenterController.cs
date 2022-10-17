@@ -25,16 +25,16 @@ namespace ResourceControlingAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<Renter> renters = await _dbContext.Renters.ToListAsync();
-            List<RenterDto> renterDtos = _mapperService.AsDtoList(renters);
+            var renters = await _dbContext.Renters.Include(r => r.Address).ToListAsync();
+            var renterDtos = _mapperService.AsDtoList(renters);
             return Ok(renterDtos);
         }
 
         [HttpGet]
         [Route("{id=int}")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public IActionResult Get([FromRoute] int id)
         {
-            var renter = await _dbContext.Renters.FindAsync(id);
+            var renter = _dbContext.Renters.Where(r=> r.RenterID == id).Include(r=>r.Address).ToList().FirstOrDefault();
 
             if(renter== null)
             {
@@ -48,10 +48,24 @@ namespace ResourceControlingAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RenterDto renterDto)
         {
-            Renter renter = _mapperService.AsModel(renterDto);
+            var renter = _mapperService.AsModel(renterDto);
+
+            if (renter.Address == null)
+            {
+                var address = await _dbContext.Addresses.FindAsync(renter.AddressId);
+
+                if (address == null)
+                {
+                    return NotFound();
+                }
+
+                renter.Address = address;
+            }
+
             await _dbContext.AddAsync(renter);
             await _dbContext.SaveChangesAsync();
-            return Ok(renter);
+            renterDto = _mapperService.AsDto(renter);
+            return Ok(renterDto);
         }
 
         [HttpDelete]
@@ -65,9 +79,10 @@ namespace ResourceControlingAPI.Controllers
                 return NotFound("Invalid Renter Id");
             }
 
+            var renterDto = _mapperService.AsDto(renter);
             _dbContext.Renters.Remove(renter);
             await _dbContext.SaveChangesAsync();
-            return Ok(renter);
+            return Ok(renterDto);
         }
 
         [HttpPut]
@@ -83,6 +98,14 @@ namespace ResourceControlingAPI.Controllers
             
             RenterUpdateService renterUpdateService = new RenterUpdateService();
             renterUpdateService.Update(renter, renterDto);
+            var address = await _dbContext.Addresses.FindAsync(renter.AddressId);
+
+            if(address == null)
+            {
+                return NotFound();
+            }
+
+            renter.Address = address;
             _dbContext.Renters.Update(renter);
             await _dbContext.SaveChangesAsync();
             return Ok(renter);

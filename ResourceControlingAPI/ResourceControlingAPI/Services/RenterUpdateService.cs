@@ -31,6 +31,10 @@ namespace ResourceControlingAPI.Services
             {
                 model.PhoneNumber = dtoUpdate.PhoneNumber;
             }
+            if (dtoUpdate.AddressId > 0)
+            {
+                model.AddressId = dtoUpdate.AddressId;
+            }
             model.IsSubscribed = dtoUpdate.IsSubscribed;
             
         }

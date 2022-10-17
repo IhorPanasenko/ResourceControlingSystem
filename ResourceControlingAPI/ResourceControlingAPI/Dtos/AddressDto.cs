@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ResourceControlingAPI.Models
+namespace ResourceControlingAPI.Dtos
 {
-    public class Address
+    public class AddressDto
     {
         [Key]
         public int AddressId { get; set; }
@@ -18,10 +18,5 @@ namespace ResourceControlingAPI.Models
 
         [Required]
         public int FlatNumber { get; set; }
-
-        public List<Device> Devices { get; set; }
-
-        public List<Renter> Renters { get; set; }
-
     }
 }

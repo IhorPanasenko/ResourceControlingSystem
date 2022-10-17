@@ -67,7 +67,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Update(int id, AddressDtoUpdate addressDto)
         {
             var address = await _dbContext.Addresses.FindAsync(id);
@@ -86,7 +86,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpDelete]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var address = await _dbContext.Addresses.FindAsync(id);

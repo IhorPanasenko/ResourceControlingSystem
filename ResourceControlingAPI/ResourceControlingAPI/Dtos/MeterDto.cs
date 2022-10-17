@@ -18,5 +18,7 @@ namespace ResourceControlingAPI.Dtos
 
         [Required]
         public double ResourcePrice { get; set; }
+
+        public int DeviceId { get; set; }
     }
 }

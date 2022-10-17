@@ -21,12 +21,14 @@ namespace ResourceControlingAPI.Controllers
     public class RenterController : Controller
     {
         private readonly RenterMapperService _mapperService;
+        private readonly AddressMapperService _addressMapperService;
         private readonly ApplicationDbContext _dbContext;
         private readonly IConfiguration _configuration;
 
         public RenterController(IMapper mapper, ApplicationDbContext dbContext, IConfiguration configuration)
         {
             _mapperService = new RenterMapperService(mapper);
+            _addressMapperService = new AddressMapperService(mapper);
             _dbContext = dbContext;
             _configuration = configuration;
         }
@@ -58,21 +60,18 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPost("Register")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
-        public async Task<IActionResult> Create(RenterDto renterDto)
+        public async Task<IActionResult> Create([FromBody]RenterDto renterDto)
         {
-            var renter = _mapperService.AsModel(renterDto);
 
-            if (renter.Address == null)
+            var address = _dbContext.Addresses.Where(a => a.AddressId == _dbContext.Addresses.Max(a => a.AddressId)).ToList()[0];
+            if(address == null)
             {
-                var address = await _dbContext.Addresses.FindAsync(renter.AddressId);
-
-                if (address == null)
-                {
-                    return NotFound();
-                }
-
-                renter.Address = address;
+                return BadRequest();
             }
+
+            var renter = _mapperService.AsModel(renterDto);
+            renter.Address = address;
+            renter.AddressId = address.AddressId;
 
             await _dbContext.AddAsync(renter);
             await _dbContext.SaveChangesAsync();

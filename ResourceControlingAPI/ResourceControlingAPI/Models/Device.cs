@@ -14,7 +14,6 @@ namespace ResourceControlingAPI.Models
         public Address Address { get; set; }
 
         [ForeignKey("MeterId")]
-        public int MeterId { get; set; }
         public Meter Meter { get; set; }
     }
 }

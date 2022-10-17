@@ -11,5 +11,7 @@ namespace ResourceControlingAPI.Dtos
         public double MaximumAvailableValue { get; set; }
 
         public double ResourcePrice { get; set; }
+
+        public int DeviceId { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,11 +8,13 @@ using ResourceControlingAPI.Data;
 using ResourceControlingAPI.Dtos;
 using ResourceControlingAPI.MapperServices;
 using ResourceControlingAPI.Services;
+using System.Data;
 
 namespace ResourceControlingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class DeviceController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
@@ -32,6 +36,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public IActionResult Get([FromRoute] int id)
         {
             var device = _dbContext.Devices.Where(d => d.DeviceId == id).Include(d => d.Address).Include(d => d.Meter).ToList().FirstOrDefault();
@@ -46,6 +51,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public async Task<IActionResult> Create(DeviceDto deviceDto)
         {
             var device = _mapperService.AsModel(deviceDto);
@@ -71,6 +77,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpDelete]
         [Route("{id=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var device = await _dbContext.Devices.FindAsync(id);
@@ -88,6 +95,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public async Task<IActionResult> Update([FromRoute] int id, DeviceDtoUpdate dtoUpdate)
         {
             var device = await _dbContext.Devices.FindAsync(id);

@@ -1,6 +1,7 @@
 ﻿using ResourceControlingAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResourceControlingAPI.Dtos
 {
@@ -32,6 +33,7 @@ namespace ResourceControlingAPI.Dtos
 
         [ForeignKey("AddressId")]
         public int AddressId { get; set; }
+        [JsonIgnore]
         public Address? Address { get; set; }
     }
 }

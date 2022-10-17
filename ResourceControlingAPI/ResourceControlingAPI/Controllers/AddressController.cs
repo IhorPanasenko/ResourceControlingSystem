@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme,Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             List<Address> addresses = await _dbContext.Addresses.ToListAsync();
@@ -37,6 +40,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var address = await _dbContext.Addresses.FindAsync(id);
@@ -63,6 +67,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public async Task<IActionResult> Update(int id, AddressDtoUpdate addressDto)
         {
             var address = await _dbContext.Addresses.FindAsync(id);
@@ -81,6 +86,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpDelete]
         [Route("{id=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var address = await _dbContext.Addresses.FindAsync(id);

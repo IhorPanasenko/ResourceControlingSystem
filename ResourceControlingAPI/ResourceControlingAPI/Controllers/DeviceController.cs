@@ -27,6 +27,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var devices = await _dbContext.Devices.Include(d => d.Address).Include(d => d.Meter).ToListAsync();
@@ -36,7 +37,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public IActionResult Get([FromRoute] int id)
         {
             var device = _dbContext.Devices.Where(d => d.DeviceId == id).Include(d => d.Address).Include(d => d.Meter).ToList().FirstOrDefault();
@@ -51,7 +52,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Create(DeviceDto deviceDto)
         {
             var device = _mapperService.AsModel(deviceDto);
@@ -77,7 +78,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpDelete]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var device = await _dbContext.Devices.FindAsync(id);
@@ -95,7 +96,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, DeviceDtoUpdate dtoUpdate)
         {
             var device = await _dbContext.Devices.FindAsync(id);

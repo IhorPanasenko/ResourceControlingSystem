@@ -39,7 +39,7 @@ namespace ResourceControlingAPI.Controllers
         // GET api/<MeterController>/5
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var meter = await _dbContext.Meters.FindAsync(id);
@@ -55,7 +55,7 @@ namespace ResourceControlingAPI.Controllers
 
         // POST api/<MeterController>
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Create(MeterDto meterDto)
         {
             if (!ModelState.IsValid)
@@ -80,7 +80,7 @@ namespace ResourceControlingAPI.Controllers
         // PUT api/<MeterController>/5
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Update([FromRoute]int id, MeterDtoUpdate meterDtoUpdate)
         {
             var meter = await _dbContext.Meters.FindAsync(id);
@@ -101,7 +101,7 @@ namespace ResourceControlingAPI.Controllers
         // DELETE api/<MeterController>/5
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
             var meter = await _dbContext.Meters.FindAsync(id);

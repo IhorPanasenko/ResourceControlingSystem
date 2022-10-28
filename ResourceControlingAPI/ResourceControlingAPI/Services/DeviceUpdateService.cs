@@ -11,10 +11,6 @@ namespace ResourceControlingAPI.Services
             {
                 model.AddressId = dtoUpdate.AddressId;
             }
-            if (dtoUpdate.MeterId > 0)
-            {
-                model.MeterId = dtoUpdate.MeterId;
-            }
         }
     }
 }

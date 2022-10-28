@@ -19,6 +19,5 @@ namespace ResourceControlingAPI.Models
         [JsonIgnore]
         public Meter? Meter { get; set; }
 
-        
     }
 }

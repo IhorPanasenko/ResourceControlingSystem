@@ -58,6 +58,7 @@ namespace ResourceControlingAPI.Controllers
             var device = _mapperService.AsModel(deviceDto);
             var address = await _dbContext.Addresses.FindAsync(deviceDto.AddressId);
             var meter = await _dbContext.Meters.FindAsync(deviceDto.MeterId);
+            
 
             if (address == null)
             {
@@ -73,6 +74,10 @@ namespace ResourceControlingAPI.Controllers
             await _dbContext.Devices.AddAsync(device);
             await _dbContext.SaveChangesAsync();
             deviceDto = _mapperService.AsDto(device);
+            meter.DeviceId = deviceDto.DeviceId;
+            meter.Device = device;
+            _dbContext.Meters.Update(meter);
+            await _dbContext.SaveChangesAsync();
             return Ok(deviceDto);
         }
 

@@ -65,6 +65,7 @@ namespace ResourceControlingAPI.Controllers
             }
 
             meterReading.Meter = meter;
+            meter.meterReadings.Add(meterReading);
             await _dbContext.MeterReadings.AddAsync(meterReading);
             await _dbContext.SaveChangesAsync();
             meterReadingDto = _mapperService.AsDto(meterReading);

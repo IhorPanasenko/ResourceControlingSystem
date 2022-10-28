@@ -64,6 +64,7 @@ namespace ResourceControlingAPI.Controllers
             var warehouse = _mapperService.AsModel(warehouseDto);
             await _dbContext.Warehouses.AddAsync(warehouse);
             await _dbContext.SaveChangesAsync();
+            warehouseDto = _mapperService.AsDto(warehouse);
             return Ok(warehouseDto);
         }
 

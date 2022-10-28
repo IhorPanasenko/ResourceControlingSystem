@@ -10,6 +10,8 @@ namespace ResourceControlingAPI.Dtos
         public int AddressId { get; set; }
         [JsonIgnore]
         public Address? Address { get; set; }
+
+        public int MeterId { get; set; }
         [JsonIgnore]
         public Meter? Meter { get; set; }
     }

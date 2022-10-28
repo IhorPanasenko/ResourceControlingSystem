@@ -20,7 +20,7 @@ namespace ResourceControlingAPI.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly OrderMapperService _mapperService;
 
-        public OrderController(ApplicationDbContext dbContext, IMapper mapper) 
+        public OrderController(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapperService = new OrderMapperService(mapper);
@@ -30,7 +30,7 @@ namespace ResourceControlingAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
-            var orders = await  _dbContext.Orders.Include(o => o.Renter).Include(o => o.Warehouse).ToListAsync(); //
+            var orders = await _dbContext.Orders.Include(o => o.Renter).Include(o => o.Warehouse).ToListAsync(); //
             var orderDtos = _mapperService.AsDtoList(orders);
             return Ok(orderDtos);
         }
@@ -40,7 +40,7 @@ namespace ResourceControlingAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var order = await _dbContext.Orders.Where(o=>o.OrderId == id).Include(o => o.Warehouse).Include(o=>o.Renter).FirstOrDefaultAsync();
+            var order = await _dbContext.Orders.Where(o => o.OrderId == id).Include(o => o.Warehouse).Include(o => o.Renter).FirstOrDefaultAsync();
 
             if (order == null)
             {
@@ -48,7 +48,7 @@ namespace ResourceControlingAPI.Controllers
             }
 
             var dto = _mapperService.AsDto(order);
-            return Ok(dto); 
+            return Ok(dto);
         }
 
         [HttpPost]
@@ -65,14 +65,21 @@ namespace ResourceControlingAPI.Controllers
 
             var warehouse = await _dbContext.Warehouses.FindAsync(orderDto.WarehouseId);
 
-            if(warehouse == null)
+            if (warehouse == null)
             {
                 return NotFound();
             }
 
+            if (warehouse.AvailableDevices < orderDto.NumberOfDevices)
+            {
+                return BadRequest("There aren't so many devices as you want\ntry to choose not so many");
+            }
+
+            warehouse.AvailableDevices -= orderDto.NumberOfDevices;
             order.Warehouse = warehouse;
             order.Renter = renter;
             orderDto = _mapperService.AsDto(order);
+            _dbContext.Warehouses.Update(warehouse);
             await _dbContext.Orders.AddAsync(order);
             await _dbContext.SaveChangesAsync();
             return Ok(orderDto);
@@ -85,7 +92,7 @@ namespace ResourceControlingAPI.Controllers
         {
             var order = await _dbContext.Orders.FindAsync(id);
 
-            if(order == null)
+            if (order == null)
             {
                 return NotFound();
             }
@@ -99,11 +106,11 @@ namespace ResourceControlingAPI.Controllers
         [HttpPut]
         [Route("{id=int}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
-        public async Task<IActionResult> Update([FromRoute]int id, OrderDtoUpdate updateDto)
+        public async Task<IActionResult> Update([FromRoute] int id, OrderDtoUpdate updateDto)
         {
             var order = await _dbContext.Orders.FindAsync(id);
 
-            if(order == null)
+            if (order == null)
             {
                 return NotFound();
             }
@@ -112,14 +119,14 @@ namespace ResourceControlingAPI.Controllers
             updateServcie.Update(order, updateDto);
             var renter = await _dbContext.Renters.FindAsync(order.RenterId);
 
-            if(renter == null)
+            if (renter == null)
             {
                 return NotFound();
             }
 
             var warehouse = await _dbContext.Warehouses.FindAsync(order.WarehouseId);
 
-            if(warehouse == null)
+            if (warehouse == null)
             {
                 return NotFound();
             }
@@ -130,6 +137,38 @@ namespace ResourceControlingAPI.Controllers
             _dbContext.Orders.Update(order);
             await _dbContext.SaveChangesAsync();
             return Ok(orderDto);
+        }
+
+        [HttpGet]
+        [Route("GetSumPrice/{renterId=int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+
+        public async Task<IActionResult> GetSumPrice([FromRoute] int renterId)
+        {
+            var renter = await _dbContext.Renters.FindAsync(renterId);
+
+            if (renter == null)
+            {
+                return BadRequest("No such user");
+            }
+
+            var orders = await _dbContext.Orders.Where(o => o.RenterId == renterId).ToListAsync();
+
+            if (!orders.Any())
+            {
+                return BadRequest("You have no orders");
+            }
+
+            var warehouse = _dbContext.Warehouses.Where(w => w.WarehouseId == orders[0].WarehouseId).FirstOrDefault();
+
+            if (warehouse == null)
+            {
+                return BadRequest("Can't find warehouse");
+            }
+
+            var sum = orders.Sum(o => o.NumberOfDevices * warehouse.DevicePrice);
+            return Ok(sum);
+
         }
     }
 }

@@ -112,17 +112,24 @@ namespace ResourceControlingAPI.Controllers
         [HttpPost("Login")]
         public IActionResult Login(UserLogin login)
         {
-            var user = _dbContext.Admins.FirstOrDefault(r => r.Login == login.Login && r.Password == login.Password);
-            var claims = new[] { new Claim(ClaimTypes.NameIdentifier, login.Login) };
-
-            if (user == null)
+            try
             {
-                return NotFound();
+               var user = _dbContext.Admins.FirstOrDefault(r => r.Login == login.Login && r.Password == login.Password);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var tokenString = getToken(user);
+
+                return Ok(tokenString);
             }
-
-            var tokenString = getToken(user);
-
-            return Ok(tokenString);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+                return BadRequest();
+            }
+            var claims = new[] { new Claim(ClaimTypes.NameIdentifier, login.Login) };
 
         }
 
@@ -152,8 +159,5 @@ namespace ResourceControlingAPI.Controllers
 
             return tokenString;
         }
-
-
-
     }
 }

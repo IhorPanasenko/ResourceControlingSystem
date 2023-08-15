@@ -13,8 +13,10 @@ namespace ResourceControlingAPI.Models
         [ForeignKey("AddressId")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
-
+        public double HoursForWaiting { get; set; }
         public int MeterId { get; set; }
+
+        public string ErrorText { get; set; } = string.Empty;
 
         [ForeignKey("MeterId")]
         [AllowNull]

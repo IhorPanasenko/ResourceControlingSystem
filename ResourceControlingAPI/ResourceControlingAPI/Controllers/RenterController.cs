@@ -34,7 +34,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var renters = await _dbContext.Renters.Include(r => r.Address).ToListAsync();
@@ -44,7 +44,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public IActionResult Get([FromRoute] int id)
         {
             var renter = _dbContext.Renters.Where(r => r.RenterID == id).Include(r => r.Address).ToList().FirstOrDefault();
@@ -59,10 +59,9 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpPost("Register")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Create([FromBody]RenterDto renterDto)
         {
-
             var address = _dbContext.Addresses.Where(a => a.AddressId == _dbContext.Addresses.Max(a => a.AddressId)).ToList()[0];
             if(address == null)
             {
@@ -99,7 +98,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, RenterDtoUpdate renterDto)
         {
             var renter = await _dbContext.Renters.FindAsync(id);
@@ -121,7 +120,8 @@ namespace ResourceControlingAPI.Controllers
             renter.Address = address;
             _dbContext.Renters.Update(renter);
             await _dbContext.SaveChangesAsync();
-            return Ok(renter);
+            var renterDtoRet = _mapperService.AsDto(renter);
+            return Ok(renterDtoRet);
         }
 
         [HttpPost("Login")]
@@ -143,13 +143,18 @@ namespace ResourceControlingAPI.Controllers
 
         private string getToken(Renter user)
         {
+            string strId = user.RenterID.ToString();
+            string strAddressId = user.AddressId.ToString();
+
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Login!),
-                new Claim(ClaimTypes.Email, user.EmailAddress!),
-                new Claim(ClaimTypes.GivenName, user.FirstName!),
-                new Claim(ClaimTypes.Surname, user.SecondName!),
-                new Claim(ClaimTypes.Role, "General")
+                new Claim("renterId", strId),
+                new Claim("addressId", strAddressId),
+                new Claim("userLogin", user.Login!),
+                new Claim("emailAddress", user.EmailAddress!),
+                new Claim("firstName", user.FirstName!),
+                new Claim("secondName", user.SecondName!),
+                new Claim("role", "General")
             };
 
             var token = new JwtSecurityToken(

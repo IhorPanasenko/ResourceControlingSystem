@@ -7,5 +7,7 @@ namespace ResourceControlingAPI.Dtos
         public int AddressId { get; set; }
 
         public int MeterId { get; set; }
+
+        public double HoursForWaiting { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var warehouses = await _dbContext.Warehouses.ToListAsync();
@@ -38,7 +38,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var warehouse = await _dbContext.Warehouses.FindAsync(id);
@@ -53,7 +53,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> Create(WarehouseDto warehouseDto)
         {
             if (warehouseDto == null)
@@ -70,7 +70,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, WarehouseDtoUpdate dtoUpdate)
         {
             var warehouse = await _dbContext.Warehouses.FindAsync(id);
@@ -90,7 +90,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpDelete]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var warehouse = await _dbContext.Warehouses.FindAsync(id);

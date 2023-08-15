@@ -12,6 +12,11 @@ namespace ResourceControlingAPI.Dtos
         public Address? Address { get; set; }
 
         public int MeterId { get; set; }
+
+        public double HoursForWaiting { get; set; }
+
+        public string ErrorText { get; set; } = string.Empty;
+
         [JsonIgnore]
         public Meter? Meter { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using ResourceControlingAPI.Models;
+﻿using Newtonsoft.Json;
+using ResourceControlingAPI.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,9 +27,12 @@ namespace ResourceControlingAPI.Dtos
 
         public int RenterId { get; set; }
 
+        [JsonIgnore]
         public RenterDto? Renter { get; set; }
 
         public int WarehouseId { get; set; }
+
+        [JsonIgnore]
         public WarehouseDto? Warehouse { get; set; }
     }
 }

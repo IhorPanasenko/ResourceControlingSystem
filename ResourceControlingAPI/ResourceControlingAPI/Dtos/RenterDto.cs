@@ -32,7 +32,6 @@ namespace ResourceControlingAPI.Dtos
         public bool IsSubscribed { get; set; } = false;
 
         [ForeignKey("AddressId")]
-        [JsonIgnore]
         public int AddressId { get; set; }
         [JsonIgnore]
         public Address? Address { get; set; }

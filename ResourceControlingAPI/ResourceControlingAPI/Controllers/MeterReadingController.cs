@@ -28,7 +28,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var meterReadings = await _dbContext.MeterReadings.Include(mR => mR.Meter).ToListAsync();
@@ -38,7 +38,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var meterReading = _dbContext.MeterReadings.Where(m => m.MeterReadingId == id).Include(m => m.Meter).ToList().FirstOrDefault();
@@ -52,8 +52,24 @@ namespace ResourceControlingAPI.Controllers
             return Ok(dto);
         }
 
+        [HttpGet]
+        [Route("ByMeter/{meterId=int}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        public async Task<IActionResult> GetByMeterId([FromRoute] int meterId)
+        {
+            var meterReading = await _dbContext.MeterReadings.Where(m => m.MeterId == meterId).ToListAsync();
+
+            if (meterReading == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapperService.AsDtoList(meterReading);
+            return Ok(dto);
+        }
+
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Create(MeterReadingDto meterReadingDto)
         {
             var meterReading = _mapperService.AsModel(meterReadingDto);
@@ -65,7 +81,7 @@ namespace ResourceControlingAPI.Controllers
             }
 
             meterReading.Meter = meter;
-            meter.meterReadings.Add(meterReading);
+            //meter.meterReadings.Add(meterReading);
             await _dbContext.MeterReadings.AddAsync(meterReading);
             await _dbContext.SaveChangesAsync();
             meterReadingDto = _mapperService.AsDto(meterReading);
@@ -74,7 +90,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
             var meterReading = await _dbContext.MeterReadings.FindAsync(id);
@@ -92,7 +108,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, MeterReadingDtoUpdate dtoUpdate)
         {
             var meterReading = _dbContext.MeterReadings.Where(m => m.MeterReadingId == id).Include(m => m.Meter).ToList().FirstOrDefault();

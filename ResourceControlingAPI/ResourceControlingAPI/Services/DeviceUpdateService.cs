@@ -10,6 +10,7 @@ namespace ResourceControlingAPI.Services
             if (dtoUpdate.AddressId > 0) 
             {
                 model.AddressId = dtoUpdate.AddressId;
+                model.HoursForWaiting = dtoUpdate.HoursForWaiting;
             }
         }
     }

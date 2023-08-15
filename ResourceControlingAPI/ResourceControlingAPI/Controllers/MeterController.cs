@@ -29,7 +29,7 @@ namespace ResourceControlingAPI.Controllers
         }
         
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             var meters = await _dbContext.Meters.ToListAsync();
@@ -40,7 +40,7 @@ namespace ResourceControlingAPI.Controllers
         
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var meter = await _dbContext.Meters.FindAsync(id);
@@ -54,9 +54,28 @@ namespace ResourceControlingAPI.Controllers
             return Ok(meterDto);
         }
 
+        [HttpGet]
+        [Route("ByUser/{userId=int}")]
+        public async Task<IActionResult> GetBYUserId([FromRoute] int userId)
+        {
+            var user = await _dbContext.Renters.FindAsync(userId);
+            var address = await _dbContext.Addresses.FirstOrDefaultAsync(a=>a.AddressId == user!.AddressId);
+            var devices = await _dbContext.Devices.Where(d=>d.AddressId ==address!.AddressId).ToListAsync();
+
+            List<Meter> meters = new List<Meter>();
+            foreach(var device in devices)
+            {
+                var meter = await _dbContext.Meters.FindAsync(device.MeterId);
+                meters.Add(meter!);
+            }
+
+            var metersDto = _mapperService.AsDtoList(meters);
+            return Ok(metersDto);
+
+        }
         
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Create(MeterDto meterDto)
         {
             if (!ModelState.IsValid)
@@ -81,7 +100,7 @@ namespace ResourceControlingAPI.Controllers
         
         [HttpPut]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Update([FromRoute] int id, MeterDtoUpdate meterDtoUpdate)
         {
             var meter = await _dbContext.Meters.FindAsync(id);
@@ -102,7 +121,7 @@ namespace ResourceControlingAPI.Controllers
         
         [HttpDelete]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var meter = await _dbContext.Meters.FindAsync(id);
@@ -120,7 +139,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("UsingForToday/{meterId=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> ResourcesForToday([FromRoute]int meterId)
         {
             var meter = await _dbContext.Meters.FindAsync(meterId);
@@ -162,7 +181,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("UsingPerWeek/{weekNumber=int}/{meterId=int}/{monthNumber=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> ReadingsForWeek([FromRoute] int meterId, [FromRoute] int weekNumber, [FromRoute] int monthNumber)
         {
             var meter = await _dbContext.Meters.FindAsync(meterId);
@@ -196,7 +215,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("UsingPerMonth/{yearNumber=int}/{meterId=int}/{monthNumber=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
 
         public async Task<IActionResult> ReadingsForMonth([FromRoute] int meterId, [FromRoute] int yearNumber, [FromRoute] int monthNumber)
         {
@@ -230,7 +249,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("AmountResourcesLeftPercents/{meterId=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> AmountResourcesLeftPercents([FromRoute]int meterId)
         {
             var meter = await _dbContext.Meters.FindAsync(meterId);
@@ -259,7 +278,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("AmountResourcesUsed/{meterId=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> AmountResourcesUsed([FromRoute]int meterId)
         {
             var meter = await _dbContext.Meters.FindAsync(meterId);
@@ -288,7 +307,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("GetPriceForMonth/{meterId=int}/{monthNumber=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> GetPriceForMonth([FromRoute] int meterId, [FromRoute] int monthNumber)
         {
             double pricePerMonth = 0;
@@ -318,7 +337,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("CurrentMoneyNeeded/{meterId=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
 
         public async Task<IActionResult> CurrentMoneyNeeded([FromRoute] int meterId)
         {
@@ -341,7 +360,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("MaximumAvailableMoney/{meterId=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
 
         public async Task<IActionResult> MaximumAvailablaMoney([FromRoute] int meterId )
         {

@@ -19,6 +19,5 @@ namespace ResourceControlingAPI.Dtos
         public int MeterId { get; set; }
 
         public MeterDto? Meter { get; set; }
-
     }
 }

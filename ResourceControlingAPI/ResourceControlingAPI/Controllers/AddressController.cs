@@ -30,7 +30,7 @@ namespace ResourceControlingAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme,Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme,Roles = "Admin")]
         public async Task<IActionResult> GetAll()
         {
             List<Address> addresses = await _dbContext.Addresses.ToListAsync();
@@ -40,7 +40,7 @@ namespace ResourceControlingAPI.Controllers
 
         [HttpGet]
         [Route("{id=int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
+       // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "General, Admin")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var address = await _dbContext.Addresses.FindAsync(id);
